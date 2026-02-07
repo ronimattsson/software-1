@@ -8,8 +8,8 @@ def get_airports_by_country(country_code):
 def run_country_program():
     code = input("Enter the country code (e.g., FI for Finland): ")
     result = get_airports_by_country(code.upper())
-    if len(result) == 0 or result == None:
-        print("No airports")
+    if result == None or len(result) == 0:
+        print(f"No airports found for country code '{code}'.")
     else:
         print("\nAirports in " + code.upper() + ": ")
         for pair in result:
