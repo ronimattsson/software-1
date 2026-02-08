@@ -11,9 +11,10 @@ def get_airports_by_country(country_code):
         collation='utf8mb3_general_ci'
     )
     cursor = yhteys.cursor()
-
-    sql = f"SELECT count(*), type FROM airport WHERE iso_country = '{country_code}' GROUP BY type ORDER BY type desc"
-    cursor.execute(sql)
+    query = """
+            SELECT count(*), type FROM airport WHERE iso_country = %s GROUP BY type ORDER BY type desc
+            """
+    cursor.execute(query, (country_code,))
     return cursor.fetchall()
 
 def run_country_program():
@@ -22,8 +23,8 @@ def run_country_program():
     if result == None or len(result) == 0:
         print(f"No airports found for country code '{code}'.")
     else:
-        print("\nAirports in " + code.upper() + ": ")
+        print("\n\nAirports in " + code.upper() + ": ")
         for pair in result:
-            print(str(pair[0]) + " " + pair[1] + " airports")
+            print(str(pair[1]) + " " + str(pair[0]) + " airports")
 
 run_country_program()
