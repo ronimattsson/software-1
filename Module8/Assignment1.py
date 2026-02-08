@@ -1,16 +1,5 @@
 import mysql.connector
 
-yhteys = mysql.connector.connect(
-    host="localhost",
-    port ="3306",
-    user="roni",
-    password="salasana",
-    database="flight_game",
-    autocommit=True
-    )
-
-cursor = yhteys.cursor()
-
 def get_town(town):
     sql = f"SELECT name, municipality from airport where ident = '{town}'"
     cursor.execute(sql)
@@ -19,6 +8,17 @@ def get_town(town):
         return ("","")
     else:
         return tulos[0] #(Nimi, kaupunki)
+
+yhteys = mysql.connector.connect(
+    host="localhost",
+    port ="3306",
+    user="roni",
+    password="",
+    database="flight_game",
+    autocommit=True,
+    collation='utf8mb3_general_ci'
+    )
+cursor = yhteys.cursor()
 
 icao = input("Enter the ICAO code of an airport: ")
 (nimi, kaupunki) = get_town(icao.upper())
