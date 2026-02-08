@@ -13,13 +13,11 @@ def get_airport_coordinates(icao_code):
     )
     cursor = connection.cursor()
 
-    sql = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident = '{icao_code}'"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if result == []:
-        return None
-    else:
-        return result[0]
+    query = """
+            SELECT latitude_deg, longitude_deg FROM airport WHERE ident = %s
+            """
+    cursor.execute(query, (icao_code,))
+    return cursor.fetchone()
 
 def run_airport_distance():
     icao1 = input("Enter the ICAO code of the first airport: ")
@@ -31,7 +29,8 @@ def run_airport_distance():
     elif coords2 == None:
         print(f"Airport with ICAO code {icao2} not found in the database.")
     else:
-        print(f"Distance between {icao1} and {icao2}: {geodesic(coords1, coords2).kilometers:.2f} kilometers")
+        distance = geodesic(coords1, coords2).kilometers
+        print(f"\n\nDistance between {icao1} and {icao2}: {distance:.2f} kilometers")
     return
 
 run_airport_distance()
